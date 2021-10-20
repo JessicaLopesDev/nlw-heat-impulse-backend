@@ -3,9 +3,16 @@ import { AuthenticateUserService } from "../services/AuthenticateUserServices"
 
 class AuthenticateUserController {
   async handle(request: Request, response: Response) {
+    const { code } = request.body;
+
     const service = new AuthenticateUserService();
-    //service.execute()
+    try {
+      const result = await service.execute(code);
+      return response.json(result);
+    } catch (error) {
+      return response.json({ error: error.message })
+    }
   }
 }
 
-export { AuthenticateUserController }
+export { AuthenticateUserController };
